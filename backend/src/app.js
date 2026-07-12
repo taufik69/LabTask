@@ -5,6 +5,7 @@ import userRoute from "./modules/user/user.routes.js";
 import { notFound } from "./shared/middlewares/notFound.middleware.js";
 import { globalErrorHandler } from "./shared/utils/globalErrorHandler.util.js";
 import { apiLimiter } from "./shared/middlewares/rateLimiter.middleware.js";
+import { StatusCodes } from "./shared/constants/statusCodes.constant.js";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,7 +22,7 @@ app.use("/api/", apiLimiter);
 
 // Health check
 app.get("/health", (req, res) => {
-  res.status(200).json({
+  res.status(StatusCodes.OK).json({
     success: true,
     message: "Server is running",
     timestamp: new Date().toISOString(),

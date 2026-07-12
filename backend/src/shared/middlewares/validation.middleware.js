@@ -1,4 +1,5 @@
 import { ApiResponse } from "../utils/response.util.js";
+import { StatusCodes } from "../constants/statusCodes.constant.js";
 
 export const validate = (schema) => {
   return (req, res, next) => {
@@ -10,7 +11,12 @@ export const validate = (schema) => {
         message: detail.message,
       }));
 
-      return ApiResponse.error(res, 400, "Validation failed", errors);
+      return ApiResponse.error(
+        res,
+        StatusCodes.BAD_REQUEST,
+        "Validation failed",
+        errors
+      );
     }
 
     next();

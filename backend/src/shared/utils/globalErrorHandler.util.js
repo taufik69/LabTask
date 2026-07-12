@@ -1,3 +1,5 @@
+import { StatusCodes } from "../constants/statusCodes.constant.js";
+
 // this error show when you are working on production mode, error size are more concise
 const productionError = (error, res) => {
   console.log("from production error function ", error);
@@ -28,7 +30,7 @@ const developmentError = (error, res) => {
 
 export const globalErrorHandler = (error, req, res, next) => {
   console.log("Error from Global Error Handler", error);
-  error.statusCode = error.statusCode || 500;
+  error.statusCode = error.statusCode || StatusCodes.SERVER_ERROR;
   if (process.env.NODE_ENV === "development") {
     developmentError(error, res);
   } else if (process.env.NODE_ENV === "production") {
