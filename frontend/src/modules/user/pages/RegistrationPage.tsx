@@ -1,4 +1,35 @@
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+
+type RegistrationFormValues = {
+  email: string;
+  password: string;
+  repeatPassword: string;
+  agreeToTerms: boolean;
+};
+
 const RegistrationPage = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<RegistrationFormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+      repeatPassword: "",
+      agreeToTerms: true,
+    },
+  });
+
+  /* todo: form submit valid hole registration data console e dekhano (porer dhape API call jukto hobe)
+  method : onSubmit
+  parameter : data - RegistrationFormValues, react-hook-form validate kore pathano value gulo */
+  const onSubmit = (data: RegistrationFormValues) => {
+    console.log(data);
+  };
+
   return (
     <section className="_social_registration_wrapper _layout_main_wrapper">
       <div className="_shape_one">
@@ -37,7 +68,11 @@ const RegistrationPage = () => {
             <div className="col-xl-4 col-lg-4 col-md-12 col-sm-12">
               <div className="_social_registration_content">
                 <div className="_social_registration_right_logo _mar_b28">
-                  <img src="/images/logo.svg" alt="Image" className="_right_logo" />
+                  <img
+                    src="/images/logo.svg"
+                    alt="Image"
+                    className="_right_logo"
+                  />
                 </div>
                 <p className="_social_registration_content_para _mar_b8">
                   Get Started Now
@@ -49,14 +84,22 @@ const RegistrationPage = () => {
                   type="button"
                   className="_social_registration_content_btn _mar_b40"
                 >
-                  <img src="/images/google.svg" alt="Image" className="_google_img" />{" "}
+                  <img
+                    src="/images/google.svg"
+                    alt="Image"
+                    className="_google_img"
+                  />{" "}
                   <span>Register with google</span>
                 </button>
                 <div className="_social_registration_content_bottom_txt _mar_b40">
                   {" "}
                   <span>Or</span>
                 </div>
-                <form className="_social_registration_form">
+                <form
+                  className="_social_registration_form"
+                  onSubmit={handleSubmit(onSubmit)}
+                  noValidate
+                >
                   <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_registration_form_input _mar_b14">
@@ -66,7 +109,19 @@ const RegistrationPage = () => {
                         <input
                           type="email"
                           className="form-control _social_registration_input"
+                          {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                              message: "Please enter a valid email address",
+                            },
+                          })}
                         />
+                        {errors.email && (
+                          <span className="text-danger">
+                            {errors.email.message}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -77,7 +132,19 @@ const RegistrationPage = () => {
                         <input
                           type="password"
                           className="form-control _social_registration_input"
+                          {...register("password", {
+                            required: "Password is required",
+                            minLength: {
+                              value: 6,
+                              message: "Password must be at least 6 characters",
+                            },
+                          })}
                         />
+                        {errors.password && (
+                          <span className="text-danger">
+                            {errors.password.message}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -88,7 +155,18 @@ const RegistrationPage = () => {
                         <input
                           type="password"
                           className="form-control _social_registration_input"
+                          {...register("repeatPassword", {
+                            required: "Please repeat your password",
+                            validate: (value) =>
+                              value === watch("password") ||
+                              "Passwords do not match",
+                          })}
                         />
+                        {errors.repeatPassword && (
+                          <span className="text-danger">
+                            {errors.repeatPassword.message}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -98,8 +176,10 @@ const RegistrationPage = () => {
                         <input
                           className="form-check-input _social_registration_form_check_input"
                           type="radio"
-                          name="flexRadioDefault"
                           id="flexRadioDefault2"
+                          {...register("agreeToTerms", {
+                            required: "You must agree to terms & conditions",
+                          })}
                           defaultChecked
                         />
                         <label
@@ -108,6 +188,11 @@ const RegistrationPage = () => {
                         >
                           I agree to terms &amp; conditions
                         </label>
+                        {errors.agreeToTerms && (
+                          <span className="text-danger">
+                            {errors.agreeToTerms.message}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -115,10 +200,10 @@ const RegistrationPage = () => {
                     <div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
                       <div className="_social_registration_form_btn _mar_t40 _mar_b60">
                         <button
-                          type="button"
+                          type="submit"
                           className="_social_registration_form_btn_link _btn1"
                         >
-                          Login now
+                          Register now
                         </button>
                       </div>
                     </div>
@@ -128,7 +213,8 @@ const RegistrationPage = () => {
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="_social_registration_bottom_txt">
                       <p className="_social_registration_bottom_txt_para">
-                        Dont have an account? <a href="#0">Create New Account</a>
+                        Already have an account?{" "}
+                        <Link to="/login">Sign in</Link>
                       </p>
                     </div>
                   </div>

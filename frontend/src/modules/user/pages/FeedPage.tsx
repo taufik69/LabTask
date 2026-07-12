@@ -790,7 +790,7 @@ const FeedPage = () => {
                             </div>
                             <hr className="_underline" />
                             <div className="_left_inner_event_bottom">
-                              <p className="_left_iner_event_bottom">17 People Going</p> <a href="#0" className="_left_iner_event_bottom_link">Going</a>
+                              <p className="_left_iner_event_bottom">17 People Going</p> <span className="_left_iner_event_bottom_link">Going</span>
                             </div>
                           </div>
                         </a>
@@ -810,7 +810,7 @@ const FeedPage = () => {
                             </div>
                             <hr className="_underline" />
                             <div className="_left_inner_event_bottom">
-                              <p className="_left_iner_event_bottom">17 People Going</p> <a href="#0" className="_left_iner_event_bottom_link">Going</a>
+                              <p className="_left_iner_event_bottom">17 People Going</p> <span className="_left_iner_event_bottom_link">Going</span>
                             </div>
                           </div>
                         </a>
@@ -929,12 +929,10 @@ const FeedPage = () => {
                             </li>
                             <li className="_feed_inner_ppl_card_area_item">
                               <a href="#0" className="_feed_inner_ppl_card_area_link">
-                                <a href="#0" className="_feed_inner_ppl_card_area_link">
-                                  <div className="_feed_inner_ppl_card_area_story_active">
-                                    <img src="/images/mobile_story_img1.png" alt="Image" className="_card_story_img1" />
-                                  </div>
-                                  <p className="_feed_inner_ppl_card_area_txt">Ryan...</p>
-                                </a>
+                                <div className="_feed_inner_ppl_card_area_story_active">
+                                  <img src="/images/mobile_story_img1.png" alt="Image" className="_card_story_img1" />
+                                </div>
+                                <p className="_feed_inner_ppl_card_area_txt">Ryan...</p>
                               </a>
                             </li>
                             <li className="_feed_inner_ppl_card_area_item">
@@ -947,12 +945,10 @@ const FeedPage = () => {
                             </li>
                             <li className="_feed_inner_ppl_card_area_item">
                               <a href="#0" className="_feed_inner_ppl_card_area_link">
-                                <a href="#0" className="_feed_inner_ppl_card_area_link">
-                                  <div className="_feed_inner_ppl_card_area_story_active">
-                                    <img src="/images/mobile_story_img1.png" alt="Image" className="_card_story_img1" />
-                                  </div>
-                                  <p className="_feed_inner_ppl_card_area_txt">Ryan...</p>
-                                </a>
+                                <div className="_feed_inner_ppl_card_area_story_active">
+                                  <img src="/images/mobile_story_img1.png" alt="Image" className="_card_story_img1" />
+                                </div>
+                                <p className="_feed_inner_ppl_card_area_txt">Ryan...</p>
                               </a>
                             </li>
                             {/*  */}

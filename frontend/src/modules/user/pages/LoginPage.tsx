@@ -1,4 +1,30 @@
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
+
 const LoginPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  /* todo: form submit valid hole login data console e dekhano (porer dhape API call jukto hobe)
+  method : onSubmit
+  parameter : data - LoginFormValues, react-hook-form validate kore pathano value gulo */
+  const onSubmit = (data: LoginFormValues) => {
+    console.log(data);
+  };
+
   return (
     <section className="_social_login_wrapper _layout_main_wrapper">
       <div className="_shape_one">
@@ -48,7 +74,11 @@ const LoginPage = () => {
                   {" "}
                   <span>Or</span>
                 </div>
-                <form className="_social_login_form">
+                <form
+                  className="_social_login_form"
+                  onSubmit={handleSubmit(onSubmit)}
+                  noValidate
+                >
                   <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_login_form_input _mar_b14">
@@ -56,7 +86,19 @@ const LoginPage = () => {
                         <input
                           type="email"
                           className="form-control _social_login_input"
+                          {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                              message: "Please enter a valid email address",
+                            },
+                          })}
                         />
+                        {errors.email && (
+                          <span className="text-danger">
+                            {errors.email.message}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
@@ -65,7 +107,19 @@ const LoginPage = () => {
                         <input
                           type="password"
                           className="form-control _social_login_input"
+                          {...register("password", {
+                            required: "Password is required",
+                            minLength: {
+                              value: 6,
+                              message: "Password must be at least 6 characters",
+                            },
+                          })}
                         />
+                        {errors.password && (
+                          <span className="text-danger">
+                            {errors.password.message}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -97,7 +151,7 @@ const LoginPage = () => {
                     <div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
                       <div className="_social_login_form_btn _mar_t40 _mar_b60">
                         <button
-                          type="button"
+                          type="submit"
                           className="_social_login_form_btn_link _btn1"
                         >
                           Login now
@@ -110,7 +164,8 @@ const LoginPage = () => {
                   <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div className="_social_login_bottom_txt">
                       <p className="_social_login_bottom_txt_para">
-                        Dont have an account? <a href="#0">Create New Account</a>
+                        Dont have an account?{" "}
+                        <Link to="/registration">Create New Account</Link>
                       </p>
                     </div>
                   </div>
