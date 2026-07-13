@@ -19,7 +19,27 @@ class UserService {
     return user;
   };
 
-  Login = async (credentials) => {};
+  Login = async (credentials) => {
+    const { email, password } = credentials;
+
+    const user = await userRepository.findByEmailWithPassword(email);
+    if (!user) {
+      throw new AppError("Invalid email or password", StatusCodes.UNAUTHORIZED);
+    }
+
+    const isPasswordValid = await user.isPasswordCorrect(password);
+    if (!isPasswordValid) {
+      throw new AppError("Invalid email or password", StatusCodes.UNAUTHORIZED);
+    }
+
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken;
+    await user.save();
+
+    return { user, accessToken, refreshToken };
+  };
 
   getUserById = async (id) => {};
 }
