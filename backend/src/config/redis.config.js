@@ -14,9 +14,9 @@ const cache = new IORedis(env.redisUrl, {
 connection.on("error", (err) =>
   console.error("[Redis/connection] Error:", err.message),
 );
-connection.on("connect", () => console.log("[Redis/connection] Connected ✅"));
+connection.on("connect", () => console.log("[Redis/connection] Connected "));
 
 cache.on("error", (err) => console.error("[Redis/cache] Error:", err.message));
-cache.on("connect", () => console.log("[Redis/cache] Connected ✅"));
+cache.on("connect", () => console.log("[Redis/cache] Connected "));
 
 export { connection, cache };

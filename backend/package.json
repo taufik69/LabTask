@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon  index.js",
-    "dev": "node index.js"
+    "dev": "node index.js",
+    "worker": "nodemon worker.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Taufik islam",
   "license": "ISC",
   "type": "module",
   "dependencies": {
@@ -26,6 +27,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.9.5",
     "morgan": "^1.10.1",
+    "multer": "^2.2.0",
     "nodemon": "^3.1.14",
     "winston": "^3.17.0"
   }
