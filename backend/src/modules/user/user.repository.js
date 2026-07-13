@@ -1,28 +1,24 @@
 import User from "./user.model.js";
 
 class UserRepository {
-  create = async (data) => {
-    return User.create(data);
+  findByEmail = async (email) => {
+    return await User.findOne({ email });
   };
 
   findById = async (id) => {
-    return User.findById(id);
+    return await User.findById(id);
   };
 
-  findByEmail = async (email) => {
-    return User.findOne({ email });
+  create = async (data) => {
+    return await User.create(data);
   };
 
-  findAll = async () => {
-    return User.find();
+  update = async (id, data) => {
+    return await User.findByIdAndUpdate(id, data, { new: true });
   };
 
-  updateById = async (id, data) => {
-    return User.findByIdAndUpdate(id, data, { new: true });
-  };
-
-  deleteById = async (id) => {
-    return User.findByIdAndDelete(id);
+  delete = async (id) => {
+    return await User.findByIdAndDelete(id);
   };
 }
 

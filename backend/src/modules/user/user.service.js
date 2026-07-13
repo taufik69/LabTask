@@ -10,7 +10,18 @@ class UserService {
     }
 
     const user = await userRepository.create(bodyData);
+    if (!user) {
+      throw new AppError(
+        "User creation failed",
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
+    }
     return user;
   };
+
+  Login = async (credentials) => {};
+
+  getUserById = async (id) => {};
 }
+
 export default new UserService();

@@ -5,15 +5,21 @@ import userService from "./user.service.js";
 import { UserDTO } from "./user.dto.js";
 
 class UserController {
-  createUser = asyncHandler(async (req, res) => {
+  registerUser = asyncHandler(async (req, res) => {
     const user = await userService.SignUp(req.body);
-    ApiResponse.success(
+    return ApiResponse.success(
       res,
       StatusCodes.CREATED,
-      "success",
-      UserDTO.toResponse(user)
+      "Registration successful",
+      UserDTO.toResponse(user),
     );
   });
+
+  login = asyncHandler(async (req, res) => {});
+
+  refreshToken = asyncHandler(async (req, res) => {});
+
+  logout = asyncHandler(async (req, res) => {});
 }
 
 export default new UserController();

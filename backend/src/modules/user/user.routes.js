@@ -1,12 +1,17 @@
 import express from "express";
-const router = express.Router();
+const _ = express.Router();
 import userController from "./user.controller.js";
 import { createUserSchema } from "./user.validator.js";
 import { validate } from "../../shared/middlewares/validation.middleware.js";
 
-// Public routes
-// router.post("/", validate(createUserSchema), userController.createUser);
 
-router.post("/signup", userController.createUser);
+_.post(
+  "/registeruser",
+  validate(createUserSchema),
+  userController.registerUser
+);
+_.post("/login", userController.login);
+_.post("/refresh-token", userController.refreshToken);
+_.post("/logout", userController.logout);
 
-export default router;
+export default _;
