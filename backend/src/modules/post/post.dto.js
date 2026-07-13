@@ -1,0 +1,3 @@
+class PostDTO {}
+
+export { PostDTO };

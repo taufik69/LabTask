@@ -4,6 +4,7 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import userRoute from "./modules/user/user.routes.js";
+import postRoute from "./modules/post/post.routes.js";
 import { notFound } from "./shared/middlewares/notFound.middleware.js";
 import { globalErrorHandler } from "./shared/utils/globalErrorHandler.util.js";
 import { apiLimiter } from "./shared/middlewares/rateLimiter.middleware.js";
@@ -40,6 +41,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api/v1/auth", userRoute);
+app.use("/api/v1/posts", postRoute);
 
 // 404 handler
 app.use(notFound);
