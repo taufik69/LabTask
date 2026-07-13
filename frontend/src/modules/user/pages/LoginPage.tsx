@@ -1,5 +1,13 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useLogin } from "@/modules/user/user.hooks";
+import { getApiErrorMessage } from "@/shared/utils/getApiErrorMessage";
+import {
+  EyeIcon,
+  EyeOffIcon,
+} from "@/shared/components/PasswordVisibilityIcons";
 
 type LoginFormValues = {
   email: string;
@@ -7,6 +15,9 @@ type LoginFormValues = {
 };
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const { mutate: login, isPending } = useLogin();
   const {
     register,
     handleSubmit,
@@ -18,11 +29,16 @@ const LoginPage = () => {
     },
   });
 
-  /* todo: form submit valid hole login data console e dekhano (porer dhape API call jukto hobe)
-  method : onSubmit
-  parameter : data - LoginFormValues, react-hook-form validate kore pathano value gulo */
   const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
+    login(data, {
+      onSuccess: () => {
+        toast.success("Login successful");
+        navigate("/feed");
+      },
+      onError: (err) => {
+        toast.error(getApiErrorMessage(err, "Login failed. Please try again."));
+      },
+    });
   };
 
   return (
@@ -53,21 +69,38 @@ const LoginPage = () => {
             <div className="col-xl-8 col-lg-8 col-md-12 col-sm-12">
               <div className="_social_login_left">
                 <div className="_social_login_left_image">
-                  <img src="/images/login.png" alt="Image" className="_left_img" />
+                  <img
+                    src="/images/login.png"
+                    alt="Image"
+                    className="_left_img"
+                  />
                 </div>
               </div>
             </div>
             <div className="col-xl-4 col-lg-4 col-md-12 col-sm-12">
               <div className="_social_login_content">
                 <div className="_social_login_left_logo _mar_b28">
-                  <img src="/images/logo.svg" alt="Image" className="_left_logo" />
+                  <img
+                    src="/images/logo.svg"
+                    alt="Image"
+                    className="_left_logo"
+                  />
                 </div>
-                <p className="_social_login_content_para _mar_b8">Welcome back</p>
+                <p className="_social_login_content_para _mar_b8">
+                  Welcome back
+                </p>
                 <h4 className="_social_login_content_title _titl4 _mar_b50">
                   Login to your account
                 </h4>
-                <button type="button" className="_social_login_content_btn _mar_b40">
-                  <img src="/images/google.svg" alt="Image" className="_google_img" />{" "}
+                <button
+                  type="button"
+                  className="_social_login_content_btn _mar_b40"
+                >
+                  <img
+                    src="/images/google.svg"
+                    alt="Image"
+                    className="_google_img"
+                  />{" "}
                   <span>Or sign-in with google</span>
                 </button>
                 <div className="_social_login_content_bottom_txt _mar_b40">
@@ -82,7 +115,9 @@ const LoginPage = () => {
                   <div className="row">
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_login_form_input _mar_b14">
-                        <label className="_social_login_label _mar_b8">Email</label>
+                        <label className="_social_login_label _mar_b8">
+                          Email
+                        </label>
                         <input
                           type="email"
                           className="form-control _social_login_input"
@@ -103,18 +138,45 @@ const LoginPage = () => {
                     </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_login_form_input _mar_b14">
-                        <label className="_social_login_label _mar_b8">Password</label>
-                        <input
-                          type="password"
-                          className="form-control _social_login_input"
-                          {...register("password", {
-                            required: "Password is required",
-                            minLength: {
-                              value: 6,
-                              message: "Password must be at least 6 characters",
-                            },
-                          })}
-                        />
+                        <label className="_social_login_label _mar_b8">
+                          Password
+                        </label>
+                        <div style={{ position: "relative" }}>
+                          <input
+                            type={showPassword ? "text" : "password"}
+                            className="form-control _social_login_input"
+                            style={{ paddingRight: "44px" }}
+                            {...register("password", {
+                              required: "Password is required",
+                              minLength: {
+                                value: 6,
+                                message:
+                                  "Password must be at least 6 characters",
+                              },
+                            })}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            aria-label={
+                              showPassword ? "Hide password" : "Show password"
+                            }
+                            style={{
+                              position: "absolute",
+                              right: "12px",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                          </button>
+                        </div>
                         {errors.password && (
                           <span className="text-danger">
                             {errors.password.message}
@@ -143,18 +205,34 @@ const LoginPage = () => {
                     </div>
                     <div className="col-lg-6 col-xl-6 col-md-6 col-sm-12">
                       <div className="_social_login_form_left">
-                        <p className="_social_login_form_left_para">Forgot password?</p>
+                        <p className="_social_login_form_left_para">
+                          Forgot password?
+                        </p>
                       </div>
                     </div>
                   </div>
+                  {/* {error && (
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
+                        <span className="text-danger">
+                          {getApiErrorMessage(
+                            error,
+                            "Login failed. Please try again.",
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  )} */}
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
                       <div className="_social_login_form_btn _mar_t40 _mar_b60">
                         <button
                           type="submit"
                           className="_social_login_form_btn_link _btn1"
+                          disabled={isPending}
+                          style={{ whiteSpace: "nowrap" }}
                         >
-                          Login now
+                          {isPending ? "Logging in..." : "Login now"}
                         </button>
                       </div>
                     </div>

@@ -1,7 +1,14 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useSignUp } from "@/modules/user/user.hooks";
+import { getApiErrorMessage } from "@/shared/utils/getApiErrorMessage";
+import { EyeIcon, EyeOffIcon } from "@/shared/components/PasswordVisibilityIcons";
 
 type RegistrationFormValues = {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   repeatPassword: string;
@@ -9,6 +16,11 @@ type RegistrationFormValues = {
 };
 
 const RegistrationPage = () => {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+  const { mutate: signUp, isPending, error } = useSignUp();
+
   const {
     register,
     handleSubmit,
@@ -16,6 +28,8 @@ const RegistrationPage = () => {
     formState: { errors },
   } = useForm<RegistrationFormValues>({
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       repeatPassword: "",
@@ -23,11 +37,32 @@ const RegistrationPage = () => {
     },
   });
 
-  /* todo: form submit valid hole registration data console e dekhano (porer dhape API call jukto hobe)
-  method : onSubmit
-  parameter : data - RegistrationFormValues, react-hook-form validate kore pathano value gulo */
+  /**
+   * todo : form submit valid hole login data console e dekhano
+   * @param data
+   * method : onSubmit
+   * parameter : data - RegistrationFormValues, react-hook-form validate kore pathano value gulo
+   */
   const onSubmit = (data: RegistrationFormValues) => {
-    console.log(data);
+    signUp(
+      {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Registration successful");
+          navigate("/login");
+        },
+        onError: (err) => {
+          toast.error(
+            getApiErrorMessage(err, "Registration failed. Please try again."),
+          );
+        },
+      },
+    );
   };
 
   return (
@@ -101,6 +136,54 @@ const RegistrationPage = () => {
                   noValidate
                 >
                   <div className="row">
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div className="_social_registration_form_input _mar_b14">
+                        <label className="_social_registration_label _mar_b8">
+                          First Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control _social_registration_input"
+                          {...register("firstName", {
+                            required: "First name is required",
+                            minLength: {
+                              value: 2,
+                              message:
+                                "First name must be at least 2 characters",
+                            },
+                          })}
+                        />
+                        {errors.firstName && (
+                          <span className="text-danger">
+                            {errors.firstName.message}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                      <div className="_social_registration_form_input _mar_b14">
+                        <label className="_social_registration_label _mar_b8">
+                          Last Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control _social_registration_input"
+                          {...register("lastName", {
+                            required: "Last name is required",
+                            minLength: {
+                              value: 2,
+                              message:
+                                "Last name must be at least 2 characters",
+                            },
+                          })}
+                        />
+                        {errors.lastName && (
+                          <span className="text-danger">
+                            {errors.lastName.message}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="_social_registration_form_input _mar_b14">
                         <label className="_social_registration_label _mar_b8">
@@ -129,17 +212,42 @@ const RegistrationPage = () => {
                         <label className="_social_registration_label _mar_b8">
                           Password
                         </label>
-                        <input
-                          type="password"
-                          className="form-control _social_registration_input"
-                          {...register("password", {
-                            required: "Password is required",
-                            minLength: {
-                              value: 6,
-                              message: "Password must be at least 6 characters",
-                            },
-                          })}
-                        />
+                        <div style={{ position: "relative" }}>
+                          <input
+                            type={showPassword ? "text" : "password"}
+                            className="form-control _social_registration_input"
+                            style={{ paddingRight: "44px" }}
+                            {...register("password", {
+                              required: "Password is required",
+                              minLength: {
+                                value: 6,
+                                message:
+                                  "Password must be at least 6 characters",
+                              },
+                            })}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            aria-label={
+                              showPassword ? "Hide password" : "Show password"
+                            }
+                            style={{
+                              position: "absolute",
+                              right: "12px",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                          </button>
+                        </div>
                         {errors.password && (
                           <span className="text-danger">
                             {errors.password.message}
@@ -152,16 +260,44 @@ const RegistrationPage = () => {
                         <label className="_social_registration_label _mar_b8">
                           Repeat Password
                         </label>
-                        <input
-                          type="password"
-                          className="form-control _social_registration_input"
-                          {...register("repeatPassword", {
-                            required: "Please repeat your password",
-                            validate: (value) =>
-                              value === watch("password") ||
-                              "Passwords do not match",
-                          })}
-                        />
+                        <div style={{ position: "relative" }}>
+                          <input
+                            type={showRepeatPassword ? "text" : "password"}
+                            className="form-control _social_registration_input"
+                            style={{ paddingRight: "44px" }}
+                            {...register("repeatPassword", {
+                              required: "Please repeat your password",
+                              validate: (value) =>
+                                value === watch("password") ||
+                                "Passwords do not match",
+                            })}
+                          />
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowRepeatPassword((prev) => !prev)
+                            }
+                            aria-label={
+                              showRepeatPassword
+                                ? "Hide password"
+                                : "Show password"
+                            }
+                            style={{
+                              position: "absolute",
+                              right: "12px",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            {showRepeatPassword ? <EyeOffIcon /> : <EyeIcon />}
+                          </button>
+                        </div>
                         {errors.repeatPassword && (
                           <span className="text-danger">
                             {errors.repeatPassword.message}
@@ -196,14 +332,28 @@ const RegistrationPage = () => {
                       </div>
                     </div>
                   </div>
+                  {error && (
+                    <div className="row">
+                      <div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
+                        <span className="text-danger">
+                          {getApiErrorMessage(
+                            error,
+                            "Registration failed. Please try again.",
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                   <div className="row">
                     <div className="col-lg-12 col-md-12 col-xl-12 col-sm-12">
                       <div className="_social_registration_form_btn _mar_t40 _mar_b60">
                         <button
                           type="submit"
                           className="_social_registration_form_btn_link _btn1"
+                          disabled={isPending}
+                          style={{ whiteSpace: "nowrap" }}
                         >
-                          Register now
+                          {isPending ? "Registering..." : "Register now"}
                         </button>
                       </div>
                     </div>

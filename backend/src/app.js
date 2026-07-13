@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -8,6 +9,13 @@ import { globalErrorHandler } from "./shared/utils/globalErrorHandler.util.js";
 import { apiLimiter } from "./shared/middlewares/rateLimiter.middleware.js";
 import { StatusCodes } from "./shared/constants/statusCodes.constant.js";
 const app = express();
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

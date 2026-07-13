@@ -1,15 +1,27 @@
 interface User {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  username: string;
   email: string;
-  role: "user" | "admin";
   createdAt: string;
 }
 
 interface SignUpPayload {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }
 
-export type { User, SignUpPayload };
+interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+interface LoginResponse {
+  accessToken: string;
+  user: User;
+}
+
+export type { User, SignUpPayload, LoginPayload, LoginResponse };
