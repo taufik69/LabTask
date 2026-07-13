@@ -5,6 +5,7 @@ import userService from "./user.service.js";
 import { UserDTO } from "./user.dto.js";
 
 class UserController {
+  // register a new user
   registerUser = asyncHandler(async (req, res) => {
     const user = await userService.SignUp(req.body);
     return ApiResponse.success(
@@ -14,7 +15,7 @@ class UserController {
       UserDTO.toResponse(user),
     );
   });
-
+  // login a user and get client cookie
   login = asyncHandler(async (req, res) => {
     const { user, accessToken, refreshToken } = await userService.Login(
       req.body,
@@ -35,7 +36,20 @@ class UserController {
     });
   });
 
-  refreshToken = asyncHandler(async (req, res) => {});
+  refreshToken = asyncHandler(async (req, res) => {
+    const token =
+      req.cookies?.refreshToken?.trim() ||
+      req.headers["x-refresh-token"]?.trim();
+
+    const accessToken = await userService.RefreshToken(token);
+
+    ApiResponse.success(
+      res,
+      StatusCodes.OK,
+      "Access token refreshed successfully",
+      { accessToken },
+    );
+  });
 
   logout = asyncHandler(async (req, res) => {});
 }

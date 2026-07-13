@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import userRepository from "./user.repository.js";
 import { AppError } from "../../shared/utils/error.utils.js";
 import { StatusCodes } from "../../shared/constants/statusCodes.constant.js";
@@ -41,7 +42,29 @@ class UserService {
     return { user, accessToken, refreshToken };
   };
 
-  getUserById = async (id) => {};
+  RefreshToken = async (refreshToken) => {
+    if (!refreshToken) {
+      throw new AppError("Refresh token not found", StatusCodes.UNAUTHORIZED);
+    }
+
+    try {
+      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    } catch (err) {
+      throw new AppError(
+        "Invalid or expired refresh token",
+        StatusCodes.UNAUTHORIZED,
+      );
+    }
+
+    const user = await userRepository.findByRefreshToken(refreshToken);
+    if (!user) {
+      throw new AppError("Invalid refresh token", StatusCodes.UNAUTHORIZED);
+    }
+
+    const accessToken = user.generateAccessToken();
+    return accessToken;
+  };
+
 }
 
 export default new UserService();

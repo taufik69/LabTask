@@ -1,5 +1,6 @@
 import express from "express";
 import compression from "compression";
+import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import userRoute from "./modules/user/user.routes.js";
 import { notFound } from "./shared/middlewares/notFound.middleware.js";
@@ -9,6 +10,7 @@ import { StatusCodes } from "./shared/constants/statusCodes.constant.js";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 // Compression
 app.use(compression());
 

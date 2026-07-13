@@ -13,6 +13,10 @@ class UserRepository {
     return await User.findById(id);
   };
 
+  findByRefreshToken = async (refreshToken) => {
+    return await User.findOne({ refreshToken });
+  };
+
   create = async (data) => {
     return await User.create(data);
   };
