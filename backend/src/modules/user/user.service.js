@@ -65,6 +65,15 @@ class UserService {
     return accessToken;
   };
 
+  Logout = async (refreshToken) => {
+    if (!refreshToken) return;
+
+    const user = await userRepository.findByRefreshToken(refreshToken);
+    if (user) {
+      user.refreshToken = null;
+      await user.save();
+    }
+  };
 }
 
 export default new UserService();

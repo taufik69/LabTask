@@ -51,7 +51,24 @@ class UserController {
     );
   });
 
-  logout = asyncHandler(async (req, res) => {});
+
+  logout = asyncHandler(async (req, res) => {
+    const token =
+      req.cookies?.refreshToken?.trim() ||
+      req.headers["x-refresh-token"]?.trim();
+
+    await userService.Logout(token);
+
+    const isProduction = process.env.NODE_ENV === "production";
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
+    });
+
+    ApiResponse.success(res, StatusCodes.OK, "Logout successful");
+  });
 }
 
 export default new UserController();
