@@ -5942,6 +5942,7 @@
     align-items: center;
     position: absolute;
     right: 0;
+    bottom: -10px;
     background: #fff;
     box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
     padding: 2px 8px 2px 12px;

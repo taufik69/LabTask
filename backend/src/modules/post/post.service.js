@@ -1,4 +1,5 @@
 import postRepository from "./post.repository.js";
+import likeRepository from "../like/like.repository.js";
 import { AppError } from "../../shared/utils/error.utils.js";
 import { StatusCodes } from "../../shared/constants/statusCodes.constant.js";
 import { imageQueue } from "../../queues/image.queue.js";
@@ -42,7 +43,15 @@ class PostService {
     const nextCursor =
       hasMore && posts.length ? encodeCursor(posts[posts.length - 1]) : null;
 
-    return { posts, nextCursor, hasMore };
+    const likedPostIds = new Set(
+      await likeRepository.findLikedTargetIds({
+        user: viewerId,
+        targetType: "Post",
+        targetIds: posts.map((post) => post._id),
+      }),
+    );
+
+    return { posts, nextCursor, hasMore, likedPostIds };
   };
 
   GetPostById = async (postId, viewerId) => {

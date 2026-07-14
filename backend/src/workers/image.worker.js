@@ -1,3 +1,4 @@
+import fs from "fs";
 import { Worker } from "bullmq";
 import { connection } from "../config/redis.config.js";
 import { IMAGE_QUEUE_NAME } from "../queues/image.queue.js";
@@ -5,6 +6,19 @@ import { cloudinaryFileUpload } from "../config/cloudinary.config.js";
 import Post from "../modules/post/post.model.js";
 import Comment from "../modules/comment/comment.model.js";
 import logger from "../config/logger.config.js";
+
+// deleteAfter is false on the cloudinaryFileUpload call below because a
+// retried job needs the file to still be on disk for the next attempt — so
+// the worker (not cloudinary.config.js) owns cleanup, once a job either
+// succeeds or exhausts all retries.
+const cleanupLocalFile = (localFilePath) => {
+  if (!localFilePath) return;
+  fs.unlink(localFilePath, (err) => {
+    if (err && err.code !== "ENOENT") {
+      logger.error(`[image-worker] Failed to remove temp file ${localFilePath}: ${err.message}`);
+    }
+  });
+};
 
 // registry mapping an image-bearing target type to its model — mirrors the
 // like module's targetResolvers pattern so any model with an `image`
@@ -55,6 +69,8 @@ const processImageJob = async (job) => {
     "image.lastError": "",
   });
 
+  cleanupLocalFile(localFilePath);
+
   return uploadResult;
 };
 
@@ -84,6 +100,12 @@ imageWorker.on("failed", async (job, err) => {
     "image.lastError": err.message,
     ...(isLastAttempt ? { "image.status": "failed" } : {}),
   });
+
+  // once retries are exhausted there's no future attempt left to reuse the
+  // file, so the temp copy would otherwise sit on disk forever
+  if (isLastAttempt) {
+    cleanupLocalFile(job.data.localFilePath);
+  }
 });
 
 export { imageWorker };

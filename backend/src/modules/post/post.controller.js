@@ -17,13 +17,13 @@ class PostController {
 
   getFeed = asyncHandler(async (req, res) => {
     const { cursor, limit = 10 } = req.query;
-    const { posts, nextCursor, hasMore } = await postService.GetFeed(
+    const { posts, nextCursor, hasMore, likedPostIds } = await postService.GetFeed(
       req.user?._id,
       { cursor, limit },
     );
 
     return ApiResponse.success(res, StatusCodes.OK, "Feed fetched successfully", {
-      posts: PostDTO.toListResponse(posts),
+      posts: PostDTO.toListResponse(posts, likedPostIds),
       nextCursor,
       hasMore,
     });
