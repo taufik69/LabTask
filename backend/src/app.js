@@ -6,6 +6,7 @@ import morgan from "morgan";
 import userRoute from "./modules/user/user.routes.js";
 import postRoute from "./modules/post/post.routes.js";
 import likeRoute from "./modules/like/like.routes.js";
+import { commentRoute, commentActionRoute } from "./modules/comment/comment.routes.js";
 import { notFound } from "./shared/middlewares/notFound.middleware.js";
 import { globalErrorHandler } from "./shared/utils/globalErrorHandler.util.js";
 import { apiLimiter } from "./shared/middlewares/rateLimiter.middleware.js";
@@ -44,6 +45,8 @@ app.get("/health", (req, res) => {
 app.use("/api/v1/auth", userRoute);
 app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/posts", likeRoute);
+app.use("/api/v1/posts", commentRoute);
+app.use("/api/v1/comments", commentActionRoute);
 
 // 404 handler
 app.use(notFound);

@@ -1,20 +1,25 @@
 import mongoose from "mongoose";
 import likeRepository from "./like.repository.js";
 import Post from "../post/post.model.js";
+import Comment from "../comment/comment.model.js";
 import { AppError } from "../../shared/utils/error.utils.js";
 import { StatusCodes } from "../../shared/constants/statusCodes.constant.js";
 import { encodeCursor, decodeCursor } from "../../shared/utils/cursor.util.js";
 
 // registry mapping a likeable target type to how to look it up / update its
-// denormalized likeCount — add "Comment" here once the comment module lands.
-// Reads the target model directly (rather than going through post.repository.js)
-// so the like module stays self-contained and doesn't require touching the
-// post module's files.
+// denormalized likeCount. Reads the target model directly (rather than
+// going through post.repository.js / comment.repository.js) so the like
+// module stays self-contained and doesn't require touching those modules.
 const targetResolvers = {
   Post: {
     findById: (id) => Post.findById(id),
     incrementLikeCount: (id, delta, session) =>
       Post.findByIdAndUpdate(id, { $inc: { likeCount: delta } }, { new: true, session }),
+  },
+  Comment: {
+    findById: (id) => Comment.findById(id),
+    incrementLikeCount: (id, delta, session) =>
+      Comment.findByIdAndUpdate(id, { $inc: { likeCount: delta } }, { new: true, session }),
   },
 };
 
