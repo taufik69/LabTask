@@ -187,3 +187,53 @@
 {"level":"info","message":"Database Disconnected","timestamp":"2026-07-13T15:55:50.451Z"}
 {"level":"info","message":"[image-worker] Job 5 completed","timestamp":"2026-07-13T16:01:15.179Z"}
 {"level":"info","message":"[image-worker] Job 6 completed","timestamp":"2026-07-13T16:01:51.522Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:14:18.648Z"}
+{"level":"info","message":"Server running in development mode on port 4000","timestamp":"2026-07-14T05:14:18.651Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:14:29.402Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:14:29.403Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:24:22.957Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:24:22.959Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:24:32.772Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:24:32.773Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:24:41.070Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:24:41.072Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:24:43.705Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:24:43.707Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:24:49.319Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:24:49.321Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:24:52.876Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:24:52.878Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:25:01.112Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:25:01.114Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:25:05.628Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:25:05.629Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:25:12.753Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:25:12.755Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:25:18.877Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:25:18.879Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:28:02.018Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:28:02.019Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:28:29.848Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:28:29.850Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:29:34.522Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:29:34.524Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:38:18.500Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:38:18.502Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:38:33.890Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:38:33.891Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:38:37.742Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:38:37.743Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T05:38:54.936Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T05:38:54.937Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T06:04:41.346Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T06:04:41.347Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T06:04:44.443Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T06:04:44.445Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T06:04:51.500Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T06:04:51.502Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T06:04:54.659Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T06:04:54.660Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T06:09:10.414Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T06:09:10.416Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-14T06:09:17.964Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T06:09:17.966Z"}

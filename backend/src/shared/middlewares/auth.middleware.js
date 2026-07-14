@@ -11,7 +11,9 @@ const extractToken = (req) => {
 const requireAuth = (req, res, next) => {
   const token = extractToken(req);
   if (!token) {
-    return next(new AppError("Access token is required", StatusCodes.UNAUTHORIZED));
+    return next(
+      new AppError("Access token is required", StatusCodes.UNAUTHORIZED),
+    );
   }
 
   try {
@@ -23,7 +25,9 @@ const requireAuth = (req, res, next) => {
     };
     next();
   } catch {
-    next(new AppError("Invalid or expired access token", StatusCodes.UNAUTHORIZED));
+    next(
+      new AppError("Invalid or expired access token", StatusCodes.UNAUTHORIZED),
+    );
   }
 };
 
@@ -40,6 +44,7 @@ const optionalAuth = (req, res, next) => {
     };
   } catch {
     // invalid/expired token on an optional route — treat as anonymous
+    console.warn("Invalid or expired access token on optional route");
   }
   next();
 };
