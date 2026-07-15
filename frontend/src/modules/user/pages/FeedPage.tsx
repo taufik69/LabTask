@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFeed } from "@/modules/post/post.hooks";
 import PostCard from "@/modules/post/components/PostCard";
 import CreatePostModal from "@/modules/post/components/CreatePostModal";
@@ -7,6 +7,10 @@ const FeedPage = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isDropShow, setIsDropShow] = useState(false);
   const [showCreatePostModal, setShowCreatePostModal] = useState(false);
+
+  useEffect(() => {
+    document.title = "Feed";
+  }, []);
 
   const {
     data: feedData,

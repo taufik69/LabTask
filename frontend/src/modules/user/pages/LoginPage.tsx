@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -18,6 +18,11 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending } = useLogin();
+
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
+
   const {
     register,
     handleSubmit,
