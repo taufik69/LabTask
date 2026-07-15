@@ -1,10 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useFeed } from "@/modules/post/post.hooks";
 import PostCard from "@/modules/post/components/PostCard";
+import PostCardSkeleton from "@/modules/post/components/PostCardSkeleton";
 import CreatePostModal from "@/modules/post/components/CreatePostModal";
 import { useInfiniteScroll } from "@/shared/hooks/useInfiniteScroll";
+import { useLogout } from "@/modules/user/user.hooks";
+import { getApiErrorMessage } from "@/shared/utils/getApiErrorMessage";
 
 const FeedPage = () => {
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   const [isDropShow, setIsDropShow] = useState(false);
   const [showCreatePostModal, setShowCreatePostModal] = useState(false);
@@ -12,6 +18,19 @@ const FeedPage = () => {
   useEffect(() => {
     document.title = "Feed";
   }, []);
+
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
+
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => {
+        navigate("/login");
+      },
+      onError: (err) => {
+        toast.error(getApiErrorMessage(err, "Logout failed. Please try again."));
+      },
+    });
+  };
 
   const {
     data: feedData,
@@ -547,14 +566,21 @@ const FeedPage = () => {
                         </a>
                       </li>
                       <li className="_nav_dropdown_list_item">
-                        <a href="#0" className="_nav_dropdown_link">
+                        <a
+                          href="#0"
+                          className="_nav_dropdown_link"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (!isLoggingOut) handleLogout();
+                          }}
+                        >
                           <div className="_nav_drop_info">
                             <span>
                               <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="none" viewBox="0 0 19 19">
                                 <path stroke="#377DFF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6.667 18H2.889A1.889 1.889 0 011 16.111V2.89A1.889 1.889 0 012.889 1h3.778M13.277 14.222L18 9.5l-4.723-4.722M18 9.5H6.667" />
                               </svg>
                             </span>
-                            Log Out
+                            {isLoggingOut ? "Logging out..." : "Log Out"}
                           </div>
                           <button type="submit" className="_nav_drop_btn_link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" fill="none" viewBox="0 0 6 10">
@@ -1115,7 +1141,11 @@ const FeedPage = () => {
                         {/* For Mobile */}
                       </div>
                       {isFeedLoading && (
-                        <p className="_feed_inner_timeline_post_box_para">Loading feed...</p>
+                        <>
+                          <PostCardSkeleton />
+                          <PostCardSkeleton />
+                          <PostCardSkeleton />
+                        </>
                       )}
                       {!isFeedLoading && posts.length === 0 && (
                         <p className="_feed_inner_timeline_post_box_para">No posts yet.</p>

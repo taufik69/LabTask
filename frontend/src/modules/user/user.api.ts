@@ -24,4 +24,9 @@ const login = async (payload: LoginPayload) => {
   return data.data;
 };
 
-export { signUp, login };
+const logout = async () => {
+  await axiosClient.post("/auth/logout");
+  localStorage.removeItem(ACCESS_TOKEN_KEY);
+};
+
+export { signUp, login, logout };

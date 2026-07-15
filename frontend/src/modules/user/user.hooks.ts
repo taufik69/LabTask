@@ -1,5 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
-import { signUp, login } from "@/modules/user/user.api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { signUp, login, logout } from "@/modules/user/user.api";
 
 const useSignUp = () => {
   return useMutation({
@@ -13,4 +13,17 @@ const useLogin = () => {
   });
 };
 
-export { useSignUp, useLogin };
+const useLogout = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      // drop every cached query so the next login doesn't briefly show
+      // the previous user's feed/comments before a refetch lands
+      queryClient.clear();
+    },
+  });
+};
+
+export { useSignUp, useLogin, useLogout };

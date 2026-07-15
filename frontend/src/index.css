@@ -1,3 +1,24 @@
 @import "./styles/common.css";
 @import "./styles/main.css";
 @import "./styles/responsive.css";
+
+._skeleton {
+  background: linear-gradient(90deg, #e9ecef 25%, #f4f5f6 37%, #e9ecef 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: 6px;
+}
+
+._dark_wrapper ._skeleton {
+  background: linear-gradient(90deg, #2a2a3c 25%, #35354a 37%, #2a2a3c 63%);
+  background-size: 400% 100%;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
