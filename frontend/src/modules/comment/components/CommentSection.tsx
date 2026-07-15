@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useComments, useCreateComment } from "@/modules/comment/comment.hooks";
 import { getApiErrorMessage } from "@/shared/utils/getApiErrorMessage";
@@ -23,7 +23,10 @@ const CommentSection = ({ postId, show }: CommentSectionProps) => {
   );
   const { mutate: submitComment, isPending: isCommenting } = useCreateComment(postId);
 
-  const comments = data?.pages.flatMap((page) => page.comments) ?? [];
+  const comments = useMemo(
+    () => data?.pages.flatMap((page) => page.comments) ?? [],
+    [data]
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;

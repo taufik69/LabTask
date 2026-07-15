@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import type { Comment } from "@/modules/comment/comment.types";
 import { useReplies, useCreateReply } from "@/modules/comment/comment.hooks";
@@ -26,7 +26,7 @@ interface CommentItemProps {
   parentCommentId?: string;
 }
 
-const CommentItem = ({ postId, comment, isReply = false, parentCommentId }: CommentItemProps) => {
+const CommentItem = memo(({ postId, comment, isReply = false, parentCommentId }: CommentItemProps) => {
   const [showReplies, setShowReplies] = useState(false);
   const [replyText, setReplyText] = useState("");
 
@@ -39,7 +39,10 @@ const CommentItem = ({ postId, comment, isReply = false, parentCommentId }: Comm
   } = useReplies(comment.id, showReplies && !isReply);
   const { mutate: submitReply, isPending: isReplying } = useCreateReply(postId, comment.id);
 
-  const replies = repliesData?.pages.flatMap((page) => page.replies) ?? [];
+  const replies = useMemo(
+    () => repliesData?.pages.flatMap((page) => page.replies) ?? [],
+    [repliesData]
+  );
 
   const handleToggleLike = () => {
     toggleLike(comment.id);
@@ -204,6 +207,6 @@ const CommentItem = ({ postId, comment, isReply = false, parentCommentId }: Comm
       </div>
     </div>
   );
-};
+});
 
 export default CommentItem;

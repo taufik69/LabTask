@@ -56,6 +56,10 @@ const useCreateComment = (postId: string) => {
         return { ...old, pages };
       });
       bumpFeedCommentCount(queryClient, postId, 1);
+
+      // comments are created infrequently, so invalidate to reconcile with
+      // the server instead of trusting the optimistic patch indefinitely
+      queryClient.invalidateQueries({ queryKey: commentsQueryKey(postId) });
     },
   });
 };
@@ -107,6 +111,10 @@ const useCreateReply = (postId: string, commentId: string) => {
 
       // replies also count toward the post's total commentCount (backend does this too)
       bumpFeedCommentCount(queryClient, postId, 1);
+
+      // replies are created infrequently, so invalidate to reconcile with
+      // the server instead of trusting the optimistic patch indefinitely
+      queryClient.invalidateQueries({ queryKey: repliesQueryKey(commentId) });
     },
   });
 };

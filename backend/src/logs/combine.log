@@ -308,3 +308,23 @@
 {"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-14T13:38:51.961Z"}
 {"level":"info","message":"[image-worker] Job 7 completed","timestamp":"2026-07-14T13:39:31.334Z"}
 {"level":"info","message":"[image-worker] Job 8 completed","timestamp":"2026-07-14T13:41:23.433Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:33:38.034Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:33:38.035Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:33:42.515Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:33:42.516Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:33:52.640Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:33:52.641Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:33:59.726Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:33:59.727Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:34:04.753Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:34:04.754Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:34:10.941Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:34:10.943Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:38:32.499Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:38:32.501Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:39:06.876Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:39:06.877Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:39:10.261Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:39:10.262Z"}
+{"level":"info","message":"Database Connected","timestamp":"2026-07-15T04:39:13.218Z"}
+{"level":"info","message":"[image-worker] Listening on queue \"image-upload\"","timestamp":"2026-07-15T04:39:13.220Z"}

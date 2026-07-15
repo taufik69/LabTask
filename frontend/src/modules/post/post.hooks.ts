@@ -58,6 +58,11 @@ const useCreatePost = () => {
           ],
         };
       });
+
+      // creating a post is infrequent, so it's worth reconciling with the
+      // server in the background (e.g. once the image worker finishes) via
+      // a real invalidation rather than trusting the optimistic patch forever
+      queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY });
     },
   });
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import type { Post } from "@/modules/post/post.types";
 import LazyImage from "@/shared/components/LazyImage";
 import { useTogglePostLike } from "@/modules/like/like.hooks";
@@ -15,7 +15,7 @@ const formatRelativeTime = (isoDate: string) => {
   return `${diffDay} day${diffDay === 1 ? "" : "s"} ago`;
 };
 
-const PostCard = ({ post }: { post: Post }) => {
+const PostCard = memo(({ post }: { post: Post }) => {
   const [showComments, setShowComments] = useState(false);
   const { mutate: toggleLike } = useTogglePostLike();
 
@@ -116,6 +116,6 @@ const PostCard = ({ post }: { post: Post }) => {
       <CommentSection postId={post.id} show={showComments} />
     </div>
   );
-};
+});
 
 export default PostCard;

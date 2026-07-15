@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFeed } from "@/modules/post/post.hooks";
 import PostCard from "@/modules/post/components/PostCard";
 import CreatePostModal from "@/modules/post/components/CreatePostModal";
+import { useInfiniteScroll } from "@/shared/hooks/useInfiniteScroll";
 
 const FeedPage = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -20,7 +21,16 @@ const FeedPage = () => {
     isLoading: isFeedLoading,
   } = useFeed();
 
-  const posts = feedData?.pages.flatMap((page) => page.posts) ?? [];
+  const posts = useMemo(
+    () => feedData?.pages.flatMap((page) => page.posts) ?? [],
+    [feedData]
+  );
+
+  const sentinelRef = useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage,
+  });
 
   return (
     <>
@@ -1114,16 +1124,10 @@ const FeedPage = () => {
                         <PostCard key={post.id} post={post} />
                       ))}
                       {hasNextPage && (
-                        <div className="_previous_comment">
-                          <button
-                            type="button"
-                            className="_previous_comment_txt"
-                            onClick={() => fetchNextPage()}
-                            disabled={isFetchingNextPage}
-                          >
-                            {isFetchingNextPage ? "Loading..." : "Load more posts"}
-                          </button>
-                        </div>
+                        <div ref={sentinelRef} style={{ height: "1px" }} />
+                      )}
+                      {isFetchingNextPage && (
+                        <p className="_feed_inner_timeline_post_box_para">Loading more posts...</p>
                       )}
                     </div>
                   </div>

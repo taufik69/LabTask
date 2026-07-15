@@ -4,6 +4,19 @@ import { AppError } from "../../shared/utils/error.utils.js";
 import { StatusCodes } from "../../shared/constants/statusCodes.constant.js";
 import { imageQueue } from "../../queues/image.queue.js";
 import { encodeCursor, decodeCursor } from "../../shared/utils/cursor.util.js";
+import {
+  getCache,
+  setCache,
+  bumpNsVersion,
+  buildCacheKey,
+} from "../../shared/utils/cache.util.js";
+
+const NS = "feed";
+const CACHE_TTL = 60; // seconds — mirrors the frontend's queryClient staleTime
+
+// exported so other modules (e.g. the image worker) can bump this
+// namespace's cache version without duplicating the "feed" literal
+export { NS as FEED_CACHE_NS };
 
 class PostService {
   CreatePost = async (authorId, body, file) => {
@@ -30,10 +43,34 @@ class PostService {
       });
     }
 
+    // a new post can appear at the top of anyone's feed — bumping the
+    // namespace version makes every previously cached feed key unreachable
+    // in one atomic op, no need to enumerate/delete them individually
+    await bumpNsVersion(NS);
+
     return postRepository.findById(post._id);
   };
 
   GetFeed = async (viewerId, { cursor, limit = 10 } = {}) => {
+    const isFirstPage = !cursor;
+    const cacheKey = isFirstPage
+      ? await buildCacheKey(NS, `first:${viewerId ?? "anon"}`)
+      : null;
+
+    if (cacheKey) {
+      const cached = await getCache(cacheKey);
+      if (cached) {
+        const likedPostIds = new Set(
+          await likeRepository.findLikedTargetIds({
+            user: viewerId,
+            targetType: "Post",
+            targetIds: cached.posts.map((post) => post._id),
+          }),
+        );
+        return { ...cached, likedPostIds };
+      }
+    }
+
     const { posts, hasMore } = await postRepository.findFeed({
       viewerId,
       cursor: decodeCursor(cursor),
@@ -42,6 +79,10 @@ class PostService {
 
     const nextCursor =
       hasMore && posts.length ? encodeCursor(posts[posts.length - 1]) : null;
+
+    if (cacheKey) {
+      await setCache(cacheKey, { posts, nextCursor, hasMore }, CACHE_TTL);
+    }
 
     const likedPostIds = new Set(
       await likeRepository.findLikedTargetIds({

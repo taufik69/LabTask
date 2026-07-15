@@ -5,6 +5,8 @@ import { IMAGE_QUEUE_NAME } from "../queues/image.queue.js";
 import { cloudinaryFileUpload } from "../config/cloudinary.config.js";
 import Post from "../modules/post/post.model.js";
 import Comment from "../modules/comment/comment.model.js";
+import { FEED_CACHE_NS } from "../modules/post/post.service.js";
+import { bumpNsVersion } from "../shared/utils/cache.util.js";
 import logger from "../config/logger.config.js";
 
 // deleteAfter is false on the cloudinaryFileUpload call below because a
@@ -69,6 +71,12 @@ const processImageJob = async (job) => {
     "image.lastError": "",
   });
 
+  // a cached feed first page may still show this post's image as
+  // pending/processing — drop it now that the real URL is available
+  if (targetType === "Post") {
+    await bumpNsVersion(FEED_CACHE_NS);
+  }
+
   cleanupLocalFile(localFilePath);
 
   return uploadResult;
@@ -100,6 +108,10 @@ imageWorker.on("failed", async (job, err) => {
     "image.lastError": err.message,
     ...(isLastAttempt ? { "image.status": "failed" } : {}),
   });
+
+  if (isLastAttempt && targetType === "Post") {
+    await bumpNsVersion(FEED_CACHE_NS);
+  }
 
   // once retries are exhausted there's no future attempt left to reuse the
   // file, so the temp copy would otherwise sit on disk forever
