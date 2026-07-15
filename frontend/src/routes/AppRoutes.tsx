@@ -1,16 +1,47 @@
-import { Routes, Route } from "react-router-dom";
-import RegistrationPage from "@/modules/user/pages/RegistrationPage";
-import LoginPage from "@/modules/user/pages/LoginPage";
-import FeedPage from "@/modules/user/pages/FeedPage";
+import { lazy, Suspense } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
+import ProtectedRoute from "@/routes/ProtectedRoute";
+import PageLoader from "@/shared/components/PageLoader";
+import ErrorFallback from "@/shared/components/ErrorFallback";
+
+const RegistrationPage = lazy(
+  () => import("@/modules/user/pages/RegistrationPage")
+);
+const LoginPage = lazy(() => import("@/modules/user/pages/LoginPage"));
+const FeedPage = lazy(() => import("@/modules/user/pages/FeedPage"));
 
 const AppRoutes = () => {
+  const location = useLocation();
+
   return (
-    <Routes>
-      <Route path="/registration" element={<RegistrationPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/feed" element={<FeedPage />} />
-      <Route path="/" element={<FeedPage />} />
-    </Routes>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      resetKeys={[location.pathname]}
+    >
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/feed"
+            element={
+              <ProtectedRoute>
+                <FeedPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <FeedPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
